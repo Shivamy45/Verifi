@@ -1,26 +1,35 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #0b0b0f; /* Dark page background */
+	--foreground: #eaeaea; /* Light text color */
+	--section: #1a1a1d; /* Section background */
+	--accent: #00ffb2; /* Neon cyan accent */
+	--muted: #d1d1d1; /* Subtle text */
+	--danger: #ff4d4d; /* Error/alert color */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.bg-background {
+	background: var(--background);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.text-foreground {
+	color: var(--foreground);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.bg-section {
+	background: var(--section);
+}
+
+.bg-accent {
+	background: var(--accent);
+}
+
+.text-muted {
+	color: var(--muted);
+}
+
+.bg-danger {
+	background: var(--danger);
 }
