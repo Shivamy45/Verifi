@@ -1,37 +1,29 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { Separator } from "@/components/ui/separator";
-import Footer from "@/components/Footer";
-
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+	variable: "--font-geist-sans",
+	subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+	variable: "--font-geist-mono",
+	subsets: ["latin"],
 });
 
 export const metadata = {
-  title: "Verifi - Truth. Verified.",
-  description: "An AI-Powered Fact-Checking Tool",
+	title: "Verifi - Truth. Verified.",
+	description: "An AI-Powered Fact-Checking Tool"
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar />
-        <Separator />
-        {children}
-        <Separator />
-        <Footer />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body
+				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				<ClientLayout>{children}</ClientLayout>
+			</body>
+		</html>
+	);
 }

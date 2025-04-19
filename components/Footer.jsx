@@ -1,14 +1,13 @@
 import Link from "next/link";
 import React from "react";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
-import { Separator } from "./ui/separator";
 
 const Footer = () => {
 	return (
 		<footer className="bg-background text-white pt-10 px-40">
 			<div className="flex w-full justify-between px-9">
 				<div className="flex flex-col items-start justify-start">
-					<div className="text-2xl font-bold text-accent">Verifi</div>
+					<div className="text-4xl font-bold text-accent">Verifi</div>
 					<p className="text-muted">Truth. Verified. Instantly.</p>
 				</div>
                 <div className="flex gap-16">

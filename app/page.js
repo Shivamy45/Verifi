@@ -51,7 +51,7 @@ export default function Home() {
 					expert verification methods to provide you with real-time,
 					accurate information.
 				</p>
-				<div className="flex justify-around items-center mt-4 px-12 gap-7">
+				<div className="flex justify-around items-center mt-4 pt-14 gap-7">
 					<div className="flex flex-col items-center border border-white p-4 rounded-3xl h-56 justify-center">
 						<FaShieldAlt className="text-4xl text-accent" />
 						<h3 className="text-xl font-semibold text-white mt-4">

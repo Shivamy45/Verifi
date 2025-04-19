@@ -8,12 +8,15 @@
 	--accent: #00ffb2; /* Neon cyan accent */
 	--muted: #d1d1d1; /* Subtle text */
 	--danger: #ff4d4d; /* Error/alert color */
+	--navbar: rgba(11, 11, 15, 0.05);
 }
 
 .bg-background {
 	background: var(--background);
 }
-
+.bg-navbar{
+	background: var(--navbar);
+}
 .text-foreground {
 	color: var(--foreground);
 }
@@ -35,4 +38,22 @@
 
 .bg-danger {
 	background: var(--danger);
+}
+
+/* used for login/signup page */
+.perspective {
+  perspective: 1000px;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.transform-style {
+  transform-style: preserve-3d;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.bg-card {
+	background: #18181b;
 }
