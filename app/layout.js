@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "@/components/ClientLayout";
+import Navbar from "@/components/Navbar";
+import { Separator } from "@/components/ui/separator";
+import Footer from "@/components/Footer";
+import ClientAuthListener from "@/components/ClientAuthListener";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -14,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
 	title: "Verifi - Truth. Verified.",
-	description: "An AI-Powered Fact-Checking Tool"
+	description: "An AI-Powered Fact-Checking Tool",
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +25,12 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<ClientLayout>{children}</ClientLayout>
+				<ClientAuthListener />
+				<Navbar />
+				<Separator />
+				{children}
+				<Separator />
+				<Footer />
 			</body>
 		</html>
 	);

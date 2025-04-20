@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import {
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
-	onAuthStateChanged,
 	updateProfile,
 	GoogleAuthProvider,
 	signInWithPopup,
@@ -31,12 +30,9 @@ const signupSchema = loginSchema.extend({
 });
 
 export default function FlipCardAuth() {
-	const { user, setUser, clearUser, loading } = useAuthStore((state) => ({
-		user: state.user,
-		setUser: state.setUser,
-		clearUser: state.clearUser,
-		loading: state.loading,
-	}));
+	const user = useAuthStore((state) => state.user);
+	const setUser = useAuthStore((state) => state.setUser);
+	const loading = useAuthStore((state) => state.loading);
 	const [flipped, setFlipped] = useState(false);
 	const router = useRouter();
 
@@ -49,24 +45,12 @@ export default function FlipCardAuth() {
 		resolver: zodResolver(flipped ? signupSchema : loginSchema),
 	});
 
-	// If user LoggedIn then redirect them to fact-check
+	// If user is logged in, redirect them to fact-check
 	useEffect(() => {
 		if (!loading && user) {
 			router.push("/fact-check");
 		}
 	}, [user, loading]);
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-			if (firebaseUser && firebaseUser.uid !== user?.uid) {
-				setUser(firebaseUser); // Only update if user changes
-			} else if (!firebaseUser) {
-				clearUser();
-			}
-		});
-
-		return () => unsubscribe();
-	}, [user]); // Adding `user` as dependency ensures it doesn't update unnecessarily
 
 	const createUserDocument = async (user) => {
 		const userRef = doc(db, "users", user.uid);
@@ -86,7 +70,7 @@ export default function FlipCardAuth() {
 		try {
 			const result = await signInWithPopup(auth, provider);
 			const user = result.user;
-			setUser(user);
+			setUser(user); // Set user in Zustand store
 			await createUserDocument(user);
 			router.push("/fact-check");
 		} catch (error) {
@@ -105,15 +89,16 @@ export default function FlipCardAuth() {
 				await updateProfile(userCredential.user, {
 					displayName: user.name,
 				});
-				setUser(userCredential.user);
-				await createUserDocument(user);
+				setUser(userCredential.user); // Set user in Zustand store
+				await createUserDocument(userCredential.user);
 				router.push("/fact-check");
 			} else {
-				await signInWithEmailAndPassword(
+				const userCredential = await signInWithEmailAndPassword(
 					auth,
 					user.email,
 					user.password
 				);
+				setUser(userCredential.user); // Set user in Zustand store after sign-in
 				router.push("/fact-check");
 			}
 			reset();
@@ -144,12 +129,14 @@ export default function FlipCardAuth() {
 									className="text-white placeholder-gray-400"
 									{...register("email")}
 								/>
+								<p className="text-red-500 text-sm">{errors.email?.message}</p>
 								<Input
 									type="password"
 									placeholder="Password"
 									className="text-white placeholder-gray-400"
 									{...register("password")}
 								/>
+								<p className="text-red-500 text-sm">{errors.password?.message}</p>
 								<Button
 									type="submit"
 									className="bg-accent border-none cursor-pointer">
@@ -192,18 +179,21 @@ export default function FlipCardAuth() {
 									className="text-white placeholder-gray-400"
 									{...register("name")}
 								/>
+								<p className="text-red-500 text-sm">{errors.name?.message}</p>
 								<Input
 									type="email"
 									placeholder="Email"
 									className="text-white placeholder-gray-400"
 									{...register("email")}
 								/>
+								<p className="text-red-500 text-sm">{errors.email?.message}</p>
 								<Input
 									type="password"
 									placeholder="Password"
 									className="text-white placeholder-gray-400"
 									{...register("password")}
 								/>
+								<p className="text-red-500 text-sm">{errors.password?.message}</p>
 								<Button
 									type="submit"
 									disabled={isSubmitting ? true : false}
