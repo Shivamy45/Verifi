@@ -9,6 +9,7 @@ import UserProfile from "./UserProfile";
 
 const Navbar = () => {
 	const user = useAuthStore((state) => state.user);
+
 	return (
 		<nav className="fixed top-0 bg-navbar backdrop-blur-lg bg-opacity-60 w-full shadow-md flex justify-between items-center px-25 py-3 z-50">
 			<Link href="/">
@@ -19,15 +20,15 @@ const Navbar = () => {
 				<Link href="#about">About</Link>
 				<Link href="#faqs">FAQs</Link>
 			</div>
-			<Button
-				variant="outline"
-				className="bg-accent border-none cursor-pointer">
-				{user ? (
-					<UserProfile />
-				) : (
+			{user ? (
+				<UserProfile />
+			) : (
+				<Button
+					variant="outline"
+					className="bg-accent border-none cursor-pointer">
 					<Link href="/login">Get Started</Link>
-				)}
-			</Button>
+				</Button>
+			)}
 		</nav>
 	);
 };

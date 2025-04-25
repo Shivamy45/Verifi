@@ -127,14 +127,24 @@ export default function FlipCardAuth() {
 									type="email"
 									placeholder="Email"
 									className="text-white placeholder-gray-400"
-									{...register("email")}
+									{...register("email", {
+										required: {
+											value: true,
+											message: "Email is required",
+										},
+									})}
 								/>
 								<p className="text-red-500 text-sm">{errors.email?.message}</p>
 								<Input
 									type="password"
 									placeholder="Password"
 									className="text-white placeholder-gray-400"
-									{...register("password")}
+									{...register("password", {
+										required: {
+											value: true,
+											message: "Password is required",
+										},
+									})}
 								/>
 								<p className="text-red-500 text-sm">{errors.password?.message}</p>
 								<Button
@@ -177,26 +187,41 @@ export default function FlipCardAuth() {
 									type="text"
 									placeholder="Name"
 									className="text-white placeholder-gray-400"
-									{...register("name")}
+									{...register("name", {
+										required: {
+											value: true,
+											message: "Name is required",
+										},
+									})}
 								/>
 								<p className="text-red-500 text-sm">{errors.name?.message}</p>
 								<Input
 									type="email"
 									placeholder="Email"
 									className="text-white placeholder-gray-400"
-									{...register("email")}
+									{...register("email", {
+										required: {
+											value: true,
+											message: "Email is required",
+										},
+									})}
 								/>
 								<p className="text-red-500 text-sm">{errors.email?.message}</p>
 								<Input
 									type="password"
 									placeholder="Password"
 									className="text-white placeholder-gray-400"
-									{...register("password")}
+									{...register("password", {
+										required: {
+											value: true,
+											message: "Password is required",
+										},
+									})}
 								/>
 								<p className="text-red-500 text-sm">{errors.password?.message}</p>
 								<Button
 									type="submit"
-									disabled={isSubmitting ? true : false}
+									disabled={isSubmitting}
 									className="bg-accent border-none cursor-pointer">
 									Sign up
 								</Button>

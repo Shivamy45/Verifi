@@ -1,8 +1,14 @@
+'use client'
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/navigation";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
+	const router = useRouter();
+		if (router.pathname === 'login') {
+			return <></>
+		}
 	return (
 		<footer className="bg-background text-white pt-10 px-40">
 			<div className="flex w-full justify-between px-9">
@@ -10,7 +16,7 @@ const Footer = () => {
 					<div className="text-4xl font-bold text-accent">Verifi</div>
 					<p className="text-muted">Truth. Verified. Instantly.</p>
 				</div>
-                <div className="flex gap-16">
+				<div className="flex gap-16">
 					<div className="flex flex-col gap-2">
 						<div>PRODUCT</div>
 						<Link href={"/"} className="text-muted text-sm">

@@ -26,7 +26,7 @@
 }
 
 .bg-accent {
-	background: var(--accent);
+	background: var(--accent) !important;
 }
 
 .text-muted {

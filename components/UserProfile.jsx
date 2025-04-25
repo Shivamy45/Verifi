@@ -1,14 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { Button } from "./ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+	DropdownMenuShortcut,
+} from "./ui/dropdown-menu";
 
 const UserProfile = () => {
 	const { user } = useAuthStore((state) => state); // Get the user state from Zustand
-	const [isOpen, setIsOpen] = useState(false); // State to toggle the dropdown
 	const router = useRouter();
 
 	const handleLogout = async () => {
@@ -20,43 +30,90 @@ const UserProfile = () => {
 		}
 	};
 
-	const handleToggleDropdown = () => {
-		setIsOpen(!isOpen); // Toggle the dropdown
-	};
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+			const cmdKey = isMac ? e.metaKey : e.ctrlKey;
+
+			if (cmdKey && e.key.toLowerCase() === "h") {
+				e.preventDefault();
+				router.push("/history");
+			}
+			if (cmdKey && e.key.toLowerCase() === "s") {
+				e.preventDefault();
+				router.push("/settings");
+			}
+			if (cmdKey && e.shiftKey && e.key.toLowerCase() === "p") {
+				e.preventDefault();
+				router.push("/profile");
+			}
+			if (cmdKey && e.shiftKey && e.key.toLowerCase() === "q") {
+				e.preventDefault();
+				handleLogout();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, []);
 
 	return (
-		<div className="relative">
-			{/* Button showing user's initials or displayName */}
-			<button
-				onClick={handleToggleDropdown}
-				className="flex items-center space-x-2 p-2 bg-gray-800 text-white rounded-full">
-				{user ? (
-					<span className="font-bold">
-						{user.displayName ? user.displayName[0] : "U"}
-					</span>
-				) : (
-					<span className="font-bold">U</span>
-				)}
-			</button>
-
-			{/* Dropdown menu for Settings and Logout */}
-			{isOpen && user && (
-				<div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-					<div className="p-2">
-						<button
-							onClick={() => router.push("/settings")} // Navigate to settings page
-							className="w-full text-left px-4 py-2 hover:bg-gray-200">
-							Settings
-						</button>
-						<button
-							onClick={handleLogout}
-							className="w-full text-left px-4 py-2 hover:bg-gray-200">
-							Logout
-						</button>
-					</div>
-				</div>
-			)}
-		</div>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button
+					variant="outline"
+					className="rounded-full cursor-pointer w-10 h-10 bg-accent text-black font-bold hover:bg-accent/80 text-2xl">
+					{user.displayName
+						? user.displayName[0]
+						: user.email.split("@")[0][0].toUpperCase()}
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent
+				className={`w-56 px-4 pt-2 bg-zinc-900 text-white shadow-lg z-50 mt-2 rounded-xs border-none`}>
+				<DropdownMenuLabel>My Account</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuItem
+						onClick={() => router.push("/profile")}
+						className="cursor-pointer hover:bg-zinc-700/30">
+						Profile
+						<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => router.push("/history")}
+						className="cursor-pointer hover:bg-zinc-700/30">
+						History
+						<DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => router.push("/settings")}
+						className="cursor-pointer hover:bg-zinc-700/30">
+						Settings
+						<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+					</DropdownMenuItem>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem
+					className={"cursor-pointer hover:bg-zinc-700/30"}
+					asChild>
+					<a
+						href="https://github.com/Shivamy45"
+						target="_blank"
+						n
+						rel="noopener noreferrer">
+						GitHub
+					</a>
+				</DropdownMenuItem>
+				<DropdownMenuItem disabled>API</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem
+					onClick={handleLogout}
+					className={"cursor-pointer hover:bg-zinc-700/30"}>
+					Logout
+					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 };
 

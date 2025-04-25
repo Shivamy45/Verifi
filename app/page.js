@@ -1,7 +1,9 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
 import {
 	FaArrowRight,
 	FaLock,
@@ -11,6 +13,8 @@ import {
 } from "react-icons/fa";
 
 export default function Home() {
+	const { user } = useAuthStore((state) => state);
+
 	return (
 		<main className="min-h-screen bg-background text-white">
 			<section className="flex flex-col justify-center items-center gap-5 py-16 px-52">
@@ -29,7 +33,7 @@ export default function Home() {
 				<Button
 					variant="outline"
 					className="bg-accent border-none cursor-pointer mt-4 text-black">
-					<Link href="/login">Verify Now</Link>
+					<Link href={user ? "/fact-check" : "/login"}>Verify Now</Link>
 				</Button>
 			</section>
 			<Separator />
@@ -142,7 +146,7 @@ export default function Home() {
 				<Button
 					variant="outline"
 					className="bg-accent border-none cursor-pointer mt-8 text-black text-xl py-3 px-8">
-					<Link href="/login">Start Verifying Now</Link>
+					<Link href={user ? "/fact-check" : "/login"}>Start Verifying Now</Link>
 				</Button>
 			</section>
 		</main>
